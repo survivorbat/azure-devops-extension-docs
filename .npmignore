@@ -1,0 +1,8 @@
+*.test.*
+.eslintignore
+.eslintrc.json
+.prettierignore
+.prettierrc
+.npmignore
+tsconfig.json
+scripts/

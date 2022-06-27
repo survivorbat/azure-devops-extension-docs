@@ -1,0 +1,12 @@
+{
+  "env": {
+    "es2021": true,
+    "jest": true
+  },
+  "extends": ["airbnb-typescript/base", "prettier"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["import"],
+  "rules": {}
+}
