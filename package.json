@@ -1,5 +1,5 @@
 {
-  "name": "azedoc",
+  "name": "azure-devops-extension-docs",
   "version": "0.0.0",
   "description": "Azure DevOps Extension Documentation generator",
   "bin": {
@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/survivorbat/azure-devops-.git"
+    "url": "git+https://github.com/survivorbat/azure-devops-extension-docs.git"
   },
   "files": [
     "dist"
   ],
   "keywords": [],
-  "homepage": "https://github.com/survivorbat/docex",
+  "homepage": "https://github.com/survivorbat/azure-devops-extension-docs",
   "author": "survivorbat",
   "license": "MIT",
   "devDependencies": {
