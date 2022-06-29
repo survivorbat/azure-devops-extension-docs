@@ -1,6 +1,6 @@
 # Azure DevOps Extension Documentation generator
 
-Markdown generator for Azure DevOps Pipeline extensions.
+Markdown generator for the documentation of Azure DevOps Pipeline extensions.
 
 ## Installation
 
@@ -8,4 +8,10 @@ Markdown generator for Azure DevOps Pipeline extensions.
 
 ## Usage
 
-`azedoc `
+`azedoc generate . --output=my-docs.md`
+
+## Plans
+
+- Add more information on the task and extension in the overview
+- Add file, links and other relevant information for the extension
+- Allow user to specify an area in their existing markdown to customize output
