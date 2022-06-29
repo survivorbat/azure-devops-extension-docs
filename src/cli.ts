@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 
-import { program} from 'commander';
-import {AzeDoc} from "./core";
+import { program } from 'commander';
+import { generateMarkdown } from './core/generate';
+import consola from 'consola';
 
 program
   .command('generate <basePath>')
   .description('Generate a markdown file based on your manifests')
-  .action((basePath) => new AzeDoc(basePath).generate());
+  .option('-o, --output <output>', 'File to write to', 'overview.md')
+  .action((basePath, {output}) => generateMarkdown(basePath, output));
 
 try {
   program.parse();
 } catch (e) {
   if (e instanceof Error) {
-    console.error(`Error occurred: ${e.message}`);
+    consola.error(`Something went wrong: ${e.message}`);
   }
 }
