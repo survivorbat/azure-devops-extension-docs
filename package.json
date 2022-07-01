@@ -12,8 +12,7 @@
     "fmt": "prettier --write . && eslint --fix .",
     "lint": "eslint .",
     "pretest": "npm run clean",
-    "test": "jest . --watchAll",
-    "prepublish": "npm run compile"
+    "test": "jest . --watchAll"
   },
   "repository": {
     "type": "git",
