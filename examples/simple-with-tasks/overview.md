@@ -6,18 +6,15 @@ More info
 
 ## Tasks
 
-
 ### supertask (1.23.25)
 
 this is a really cool task
 
-
-
 #### Inputs
 
-| Name | Input | Help |
-| ---- | ----- | ---- |
-| foo | string | I need some help!
+| Name | Input  | Help              |
+| ---- | ------ | ----------------- |
+| foo  | string | I need some help! |
 
 #### Usage
 
@@ -27,4 +24,3 @@ this is a really cool task
   # bar true
   foo: <string>
 ```
-

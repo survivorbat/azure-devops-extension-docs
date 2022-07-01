@@ -2,6 +2,4 @@
 
 The coolest one out there!
 
-
 ## Tasks
-
