@@ -1,6 +1,6 @@
 {
   "name": "azure-devops-extension-docs",
-  "version": "0.0.2g",
+  "version": "0.0.3",
   "description": "Azure DevOps Extension Documentation generator",
   "bin": {
     "azedoc": "dist/cli.js"
