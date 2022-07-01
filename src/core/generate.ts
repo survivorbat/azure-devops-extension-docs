@@ -1,43 +1,72 @@
 import * as fs from 'fs';
 import { PathDoesNotExistError } from './errors';
 import path from 'path';
-import twig from 'twig';
 import glob from 'glob-promise';
 import { ExtensionData } from './objects';
 import consola from 'consola';
+import Handlebars from 'handlebars';
+import * as os from 'os';
 
-export const overviewPath = path.join(
+export const templatePath = path.join(
   __dirname,
   '..',
   'templates',
-  'overview.twig',
+  'overview.md',
 );
 export const extensionManifestName = 'vss-extension.json';
 export const taskManifestName = 'task.json';
 
-const verifyPathExists = async (basePath: string) => {
-  consola.debug(`Verifying whether ${basePath} exists`);
-  if (!fs.existsSync(basePath)) {
-    throw new PathDoesNotExistError(basePath);
+// Helper to show the options as a list
+Handlebars.registerHelper(
+  'inputType',
+  (inputType: string, options: Record<string, string>): string => {
+    if (inputType !== 'radio') {
+      return inputType;
+    }
+
+    return Object.keys(options).join(', ');
+  },
+);
+
+// Helper to strip newlines
+Handlebars.registerHelper('strip-newlines', (input: string): string =>
+  (input || '').replace(os.EOL, ' '),
+);
+
+/**
+ * Is a helper method to throw an error on a non-existent file
+ * @param filePath
+ */
+const verifyPathExists = async (filePath: string) => {
+  consola.debug(`Verifying whether ${filePath} exists`);
+  if (!fs.existsSync(filePath)) {
+    throw new PathDoesNotExistError(filePath);
   }
 };
 
-const writeToFile = async (destination: string, data: ExtensionData) => {
-  consola.debug(`Converting data using ${overviewPath}`);
-  const output: string = await new Promise((resolve, reject) => {
-    twig.renderFile(overviewPath, data, (err: Error, result: string) => {
-      if (err) {
-        reject(err.message);
-      }
-
-      resolve(result);
-    });
-  });
+/**
+ * Write the extension data to the given destination
+ * @param destination
+ * @param data
+ */
+const writeToFile = async (
+  destination: string,
+  data: ExtensionData,
+): Promise<void> => {
+  consola.debug(`Converting data using ${templatePath}`);
+  const templateContents = await fs.promises.readFile(templatePath, 'utf-8');
+  const template = Handlebars.compile(templateContents);
+  const output: string = template(data);
 
   consola.debug(`Writing ${output.length} characters to ${destination}`);
-  await fs.promises.writeFile(destination, output);
+  return fs.promises.writeFile(destination, output);
 };
 
+/**
+ * Read data from vss-extension.json and any task.json files in the underlying directories
+ * @param basePath
+ * @param manifestPath
+ */
 const readData = async (
   basePath: string,
   manifestPath: string,
@@ -58,6 +87,11 @@ const readData = async (
   };
 };
 
+/**
+ * Main method, reads data and writes it to the output
+ * @param basePath
+ * @param output
+ */
 export const generateMarkdown = async (basePath: string, output: string) => {
   const expectedManifestPath = path.join(basePath, extensionManifestName);
 

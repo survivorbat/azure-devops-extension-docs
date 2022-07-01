@@ -7,3 +7,4 @@
 tsconfig.json
 scripts/
 overview.md
+jest.config.js
