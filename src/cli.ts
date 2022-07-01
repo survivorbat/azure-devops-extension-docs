@@ -8,7 +8,7 @@ program
   .command('generate <basePath>')
   .description('Generate a markdown file based on your manifests')
   .option('-o, --output <output>', 'File to write to', 'overview.md')
-  .action((basePath, {output}) => generateMarkdown(basePath, output));
+  .action((basePath, { output }) => generateMarkdown(basePath, output));
 
 try {
   program.parse();

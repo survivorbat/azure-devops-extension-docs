@@ -1,0 +1,18 @@
+{
+  "name": "supertask",
+  "description": "this is a really cool task",
+  "version": {
+    "Major": 1,
+    "Minor": 23,
+    "Patch": 25
+  },
+  "inputs": [
+    {
+      "name": "foo",
+      "required": true,
+      "type": "string",
+      "label": "bar",
+      "helpMarkdown": "I need some help!"
+    }
+  ]
+}

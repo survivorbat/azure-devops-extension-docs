@@ -1,0 +1,42 @@
+# {{ extension.name }}
+
+{% if extension.description is not empty %}
+{{ extension.description }}
+
+{% endif %}
+{% if extension.helpMarkDown is not empty %}
+{{ extension.helpMarkDown }}
+
+{% endif %}
+{% if tasks | length > 0 %}
+## Tasks
+
+{% for task in tasks %}
+### {{ task.name }} ({{ task.version.Major }}.{{ task.version.Minor }}.{{ task.version.Patch }})
+
+{% if task.description is not empty %}
+{{ task.description }}
+
+{% endif %}
+{% if task.helpMarkDown is not empty %}
+{{ task.helpMarkDown }}
+
+{% endif %}
+#### Inputs
+
+{% if task.inputs | length > 0 %}
+```yaml
+{% if task.description is not empty %}
+# {{ task.description }}
+{% endif %}
+- task: {{ task.name }}@{{ task.version.Major }}
+{% for taskInput in task.inputs %}
+{% if taskInput.label is not empty %}
+  # {{ taskInput.label }} {{ taskInput.required ? "(required)" }}
+{% endif %}
+  {{ taskInput.name }}: <{{ taskInput.type }}> # {{ taskInput.helpMarkDown }}
+{% endfor %}
+```
+{% endif %}
+{% endfor %}
+{% endif %}

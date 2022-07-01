@@ -1,11 +1,7 @@
 import tmp from 'tmp';
 import path from 'path';
 import * as fs from 'fs';
-import {
-  extensionManifestName,
-  generateMarkdown,
-  taskManifestName,
-} from './generate';
+import { extensionManifestName, generateMarkdown } from './generate';
 
 tmp.setGracefulCleanup();
 
@@ -14,46 +10,10 @@ describe('generateMarkdown', () => {
     {
       basePath: 'test-folder',
       destination: 'other-test',
-      expected: `# My Super Extension
-
-This extension is amazing`,
-      files: [
-        {
-          name: extensionManifestName,
-          directory: '.',
-          contents: {
-            name: 'My Super Extension',
-            description: 'This extension is amazing',
-          },
-        },
-      ],
     },
     {
       basePath: 'another',
       destination: 'yup',
-      expected: `# I Love Extensions
-
-Or maybe I don't`,
-      files: [
-        {
-          name: extensionManifestName,
-          directory: '.',
-          contents: {
-            name: 'I Love Extensions',
-            description: "Or maybe I don't",
-          },
-        },
-        {
-          name: taskManifestName,
-          directory: 'task1',
-          contents: {},
-        },
-        {
-          name: taskManifestName,
-          directory: 'task2',
-          contents: {},
-        },
-      ],
     },
   ];
 
@@ -88,28 +48,23 @@ Or maybe I don't`,
     });
   });
 
-  testData.forEach(({ basePath, destination, files, expected }) => {
+  // These tests are super basic, we run full tests in cli.test.ts
+  testData.forEach(({ basePath, destination }) => {
     const tmpDir = tmp.dirSync().name;
-    destination = path.join(tmpDir, destination);
     basePath = path.join(tmpDir, basePath);
     fs.mkdirSync(basePath);
 
-    it(`writes expected output to '${destination}' in '${basePath}'`, async () => {
+    it(`creates '${destination}' from '${basePath}'`, async () => {
       // Arrange
-      files.forEach(({ directory, name, contents }) => {
-        const fullDirectory = path.join(basePath, directory);
-        fs.mkdirSync(fullDirectory, { recursive: true });
-
-        const fullPath = path.join(fullDirectory, name);
-        fs.writeFileSync(fullPath, JSON.stringify(contents));
-      });
+      const fullPath = path.join(basePath, extensionManifestName);
+      fs.writeFileSync(fullPath, '{}');
 
       // Act
       await generateMarkdown(basePath, destination);
 
       // Assert
-      const result = fs.readFileSync(destination, 'utf-8');
-      expect(result).toEqual(expected);
+      const result = fs.existsSync(destination);
+      expect(result).toBeTruthy();
     });
   });
 });

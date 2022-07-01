@@ -1,24 +1,38 @@
 import * as fs from 'fs';
 import { PathDoesNotExistError } from './errors';
 import path from 'path';
+import twig from 'twig';
 import glob from 'glob-promise';
 import { ExtensionData } from './objects';
-import { overviewTemplate } from '../templates/overview';
-import consola from "consola";
+import consola from 'consola';
 
+export const overviewPath = path.join(
+  __dirname,
+  '..',
+  'templates',
+  'overview.twig',
+);
 export const extensionManifestName = 'vss-extension.json';
 export const taskManifestName = 'task.json';
 
 const verifyPathExists = async (basePath: string) => {
-  consola.debug(`Verifying whether ${basePath} exists`)
+  consola.debug(`Verifying whether ${basePath} exists`);
   if (!fs.existsSync(basePath)) {
     throw new PathDoesNotExistError(basePath);
   }
 };
 
 const writeToFile = async (destination: string, data: ExtensionData) => {
-  consola.debug('Converting data');
-  const output = overviewTemplate(data);
+  consola.debug(`Converting data using ${overviewPath}`);
+  const output: string = await new Promise((resolve, reject) => {
+    twig.renderFile(overviewPath, data, (err: Error, result: string) => {
+      if (err) {
+        reject(err.message);
+      }
+
+      resolve(result);
+    });
+  });
 
   consola.debug(`Writing ${output.length} characters to ${destination}`);
   await fs.promises.writeFile(destination, output);
@@ -32,10 +46,9 @@ const readData = async (
   const taskFiles = await glob.promise(taskGlob);
 
   const promises = [manifestPath, ...taskFiles].map(async (filePath) => {
-      consola.debug(`Reading ${filePath}`);
-      return fs.promises.readFile(filePath, 'utf-8');
-    },
-  );
+    consola.debug(`Reading ${filePath}`);
+    return fs.promises.readFile(filePath, 'utf-8');
+  });
 
   const results = await Promise.all(promises);
 
@@ -56,5 +69,5 @@ export const generateMarkdown = async (basePath: string, output: string) => {
 
   await writeToFile(output, data);
 
-  consola.success(`Successfully turned ${basePath} into ${output}`)
+  consola.success(`Successfully turned ${basePath} into ${output}`);
 };
