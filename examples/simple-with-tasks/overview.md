@@ -2,15 +2,18 @@
 
 ![logo.drawio.png](logo.drawio.png)
 
-Example Extension creates something
+Example Extension creates something 
+
 
 ## Tasks
+
 
 ### MyTask (5.1.0)
 
 My task creates amazing objects in Azure DevOps
 
 Use this task if you want to create something
+
 
 #### Inputs
 
@@ -22,6 +25,7 @@ Use this task if you want to create something
 | publishOrPreview | preview, publish | If not specified, things will be created but not published
 | dryRun | boolean | If set to true, the task will not create/delete and only pretend to do so. Allows you to see what&#x27;d happen if you used the task.
 
+
 #### Usage
 
 ```yaml
@@ -31,15 +35,17 @@ Use this task if you want to create something
   name: <string>
   # Publish or Preview (required)
   publishOrPreview: <radio>
-  # Dry Run
+  # Dry Run 
   dryRun: <boolean>
 ```
+
 
 ### TestTask (1.0.0)
 
 This task performs tests
 
 Should be used along side the other one
+
 
 #### Inputs
 
@@ -48,6 +54,7 @@ Should be used along side the other one
 
 
 | name | string | This should be the name of the thing you&#x27;re going to create
+
 
 #### Usage
 
@@ -58,13 +65,16 @@ Should be used along side the other one
   name: <string>
 ```
 
+
 ## Links
+
 
 - [**Home**](https://maarten.dev)
 
 - [**Support**](https://maarten.dev/support)
 
 - [**Repository**](https://github.com/survivorbat/azure-devops-extension-docs.git)
+
 
 ---
 
