@@ -22,7 +22,11 @@ describe('generateMarkdown', () => {
   testData.forEach(({ basePath, destination }) => {
     it(`throws error if ${basePath} does not exist`, async () => {
       // Arrange
-      const config = {output: destination, template: defaultTemplate, excludes: []};
+      const config = {
+        output: destination,
+        template: defaultTemplate,
+        excludes: [],
+      };
 
       // Act
       const result = async () => generateMarkdown(basePath, config);
@@ -41,7 +45,11 @@ describe('generateMarkdown', () => {
 
     it(`throws error if ${basePath}/${extensionManifestName} does not exist`, async () => {
       // Arrange
-      const config = {output: destination, template: defaultTemplate, excludes: []};
+      const config = {
+        output: destination,
+        template: defaultTemplate,
+        excludes: [],
+      };
 
       // Act
       const result = async () => generateMarkdown(basePath, config);
@@ -68,7 +76,11 @@ describe('generateMarkdown', () => {
       const fullPath = path.join(basePath, extensionManifestName);
       fs.writeFileSync(fullPath, '{}');
 
-      const config = {output: destination, template: defaultTemplate, excludes: []};
+      const config = {
+        output: destination,
+        template: defaultTemplate,
+        excludes: [],
+      };
 
       // Act
       await generateMarkdown(basePath, config);

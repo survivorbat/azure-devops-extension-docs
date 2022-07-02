@@ -1,18 +1,53 @@
 {
-  "name": "supertask",
-  "description": "this is a really cool task",
+  "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+  "id": "ff3157c8-3c75-42e8-ace5-950fdc586091",
+  "name": "MyTask",
+  "friendlyName": "My Task",
+  "description": "My task creates amazing objects in Azure DevOps",
+  "helpMarkDown": "Use this task if you want to create something",
+  "author": "Someone else",
   "version": {
-    "Major": 1,
-    "Minor": 23,
-    "Patch": 25
+    "Major": 5,
+    "Minor": 1,
+    "Patch": 0
   },
+  "preview": false,
+  "showEnvironmentVariables": false,
+  "runsOn": ["Agent", "MachineGroup", "Server"],
+  "category": "Azure Pipelines",
+  "visibility": ["Release"],
   "inputs": [
     {
-      "name": "foo",
-      "required": true,
+      "name": "name",
       "type": "string",
-      "label": "bar",
-      "helpMarkDown": "I need some help!"
+      "label": "Name of the thing",
+      "required": true,
+      "helpMarkDown": "This should be the name of the thing you're going to create"
+    },
+    {
+      "name": "publishOrPreview",
+      "type": "radio",
+      "label": "Publish or Preview",
+      "defaultValue": "preview",
+      "options": {
+        "preview": "Generate preview",
+        "publish": "Publish"
+      },
+      "required": true,
+      "helpMarkDown": "If not specified, things will be created but not published"
+    },
+    {
+      "name": "dryRun",
+      "type": "boolean",
+      "label": "Dry Run",
+      "required": false,
+      "defaultValue": false,
+      "helpMarkDown": "If set to true, the task will not create/delete and only pretend to do so. Allows you to see what'd happen if you used the task."
     }
-  ]
+  ],
+  "execution": {
+    "Node10": {
+      "target": "index.js"
+    }
+  }
 }

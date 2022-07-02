@@ -1,1 +1,1 @@
-{{ extension.random-data }}
+# {{ extension.other-data }}

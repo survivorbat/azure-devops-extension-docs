@@ -5,27 +5,9 @@ import glob from 'glob-promise';
 import { ExtensionData } from './objects';
 import consola from 'consola';
 import Handlebars from 'handlebars';
-import * as os from 'os';
 
 export const extensionManifestName = 'vss-extension.json';
 export const taskManifestName = 'task.json';
-
-// Helper to show the options as a list
-Handlebars.registerHelper(
-  'inputType',
-  (inputType: string, options: Record<string, string>): string => {
-    if (inputType !== 'radio') {
-      return inputType;
-    }
-
-    return Object.keys(options).join(', ');
-  },
-);
-
-// Helper to strip newlines
-Handlebars.registerHelper('strip-newlines', (input: string): string =>
-  (input || '').replace(os.EOL, ' '),
-);
 
 /**
  * Is a helper method to throw an error on a non-existent file
@@ -96,7 +78,10 @@ interface GenerateOptions {
  * @param basePath
  * @param options
  */
-export const generateMarkdown = async (basePath: string, {output, template}: GenerateOptions) => {
+export const generateMarkdown = async (
+  basePath: string,
+  { output, template }: GenerateOptions,
+) => {
   const expectedManifestPath = path.join(basePath, extensionManifestName);
 
   // Wanted to make these parallel, but that's harder to test

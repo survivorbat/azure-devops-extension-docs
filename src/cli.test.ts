@@ -43,7 +43,9 @@ describe('cli', () => {
     const testData = fs.readdirSync(basePath).map((dirName) => {
       const exampleContents = fs.readdirSync(path.join(basePath, dirName));
 
-      const customTemplate = exampleContents.find((c) => c.endsWith('template.md'))!;
+      const customTemplate = exampleContents.find((c) =>
+        c.endsWith('template.md'),
+      )!;
 
       return {
         expectedOutput: path.join(
@@ -51,11 +53,9 @@ describe('cli', () => {
           dirName,
           exampleContents.find((c) => c.endsWith('overview.md'))!,
         ),
-        customTemplate: customTemplate ? path.join(
-          basePath,
-          dirName,
-          customTemplate,
-        ) : null,
+        customTemplate: customTemplate
+          ? path.join(basePath, dirName, customTemplate)
+          : null,
         input: path.join(
           basePath,
           dirName,
@@ -71,7 +71,9 @@ describe('cli', () => {
       it(`generates ${expectedOutput} from ${input}`, async () => {
         // Arrange
         const cmdOutput = ['--output', resultFile];
-        const cmdTemplate = customTemplate ? ['--template', customTemplate] : [];
+        const cmdTemplate = customTemplate
+          ? ['--template', customTemplate]
+          : [];
 
         // Act
         const result = await cli(

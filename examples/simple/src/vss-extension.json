@@ -1,4 +1,43 @@
 {
-  "name": "My cool extension",
-  "description": "The coolest one out there!"
+  "manifestVersion": 1,
+  "id": "ExampleExtension",
+  "publisher": "Me",
+  "version": "1.2.3",
+  "name": "Example Extension",
+  "description": "Example Extension creates something ",
+  "public": false,
+  "categories": ["Azure Pipelines"],
+  "galleryFlags": ["Public"],
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "icons": {
+    "default": "logo.drawio.png"
+  },
+  "content": {
+    "details": {
+      "path": "overview.md"
+    }
+  },
+  "tags": ["Todo"],
+  "links": {
+    "home": {
+      "uri": "https://maarten.dev"
+    },
+    "support": {
+      "uri": "https://maarten.dev/support"
+    },
+    "repository": {
+      "uri": "https://github.com/survivorbat/azure-devops-extension-docs.git"
+    }
+  },
+  "branding": {
+    "color": "#e9ebed",
+    "theme": "light"
+  },
+  "contributions": [],
+  "files": [],
+  "scopes": ["vso.serviceendpoint_query"]
 }

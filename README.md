@@ -27,7 +27,5 @@ Check out [the examples](./examples) to see how the markdown is generated.
 
 ## 🔭 Plans
 
-- Add file, links and other relevant information for the extension
 - Allow user to specify an area in their existing markdown to customize output
-- Expand template to include more info
 - Better error handling
