@@ -1,5 +1,9 @@
 # 🪠 Azure DevOps Extension Documentation generator
 
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/survivorbat/azure-devops-extension-docs/deploy)
+![npm](https://img.shields.io/npm/dt/azure-devops-extension-docs)
+![GitHub](https://img.shields.io/github/license/survivorbat/azure-devops-extension-docs)
+
 _Also known as **azedoc**_
 
 Markdown generator for the documentation of Azure DevOps Pipeline extensions.
