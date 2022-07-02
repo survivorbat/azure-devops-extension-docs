@@ -12,9 +12,14 @@ a overview of the extension from a template.
 
 ## 📋 Usage
 
-There's currently only one command with one option.
+### azedoc generate \<extension-directory>
 
-`azedoc generate . --output=my-docs.md`
+Generates a markdown file using the vss-extension.json and task.json files.
+
+#### Options
+
+- `--output`: Allows you to specify the output file
+- `--template`: Allows you to specify a custom handlebars template to use
 
 ## 🪧 Examples
 
@@ -22,6 +27,7 @@ Check out [the examples](./examples) to see how the markdown is generated.
 
 ## 🔭 Plans
 
-- Perhaps switch to a different templating engine, twig makes whitespace hard to deal with
 - Add file, links and other relevant information for the extension
 - Allow user to specify an area in their existing markdown to customize output
+- Expand template to include more info
+- Better error handling

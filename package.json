@@ -1,6 +1,6 @@
 {
   "name": "azure-devops-extension-docs",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Azure DevOps Extension Documentation generator",
   "bin": {
     "azedoc": "dist/cli.js"
@@ -12,7 +12,8 @@
     "fmt": "prettier --write . && eslint --fix .",
     "lint": "eslint .",
     "pretest": "npm run clean",
-    "test": "jest . --watchAll"
+    "test": "jest .",
+    "live-test": "jest . --watchAll"
   },
   "repository": {
     "type": "git",

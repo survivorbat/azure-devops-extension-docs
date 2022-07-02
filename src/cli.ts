@@ -3,12 +3,14 @@
 import { program } from 'commander';
 import { generateMarkdown } from './core/generate';
 import consola from 'consola';
+import path from "path";
 
 program
   .command('generate <basePath>')
   .description('Generate a markdown file based on your manifests')
   .option('-o, --output <output>', 'File to write to', 'overview.md')
-  .action((basePath, { output }) => generateMarkdown(basePath, output));
+  .option('-t, --template <template>', 'Custom handlebars template to use', path.join(__dirname, 'templates', 'overview.md'))
+  .action(generateMarkdown);
 
 try {
   program.parse();

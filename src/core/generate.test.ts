@@ -5,6 +5,8 @@ import { extensionManifestName, generateMarkdown } from './generate';
 
 tmp.setGracefulCleanup();
 
+const defaultTemplate = path.join(__dirname, '..', 'templates', 'overview.md');
+
 describe('generateMarkdown', () => {
   const testData = [
     {
@@ -19,8 +21,11 @@ describe('generateMarkdown', () => {
 
   testData.forEach(({ basePath, destination }) => {
     it(`throws error if ${basePath} does not exist`, async () => {
+      // Arrange
+      const config = {output: destination, template: defaultTemplate, excludes: []};
+
       // Act
-      const result = async () => generateMarkdown(basePath, destination);
+      const result = async () => generateMarkdown(basePath, config);
 
       // Assert
       await expect(result).rejects.toThrow(
@@ -35,8 +40,11 @@ describe('generateMarkdown', () => {
     fs.mkdirSync(basePath);
 
     it(`throws error if ${basePath}/${extensionManifestName} does not exist`, async () => {
+      // Arrange
+      const config = {output: destination, template: defaultTemplate, excludes: []};
+
       // Act
-      const result = async () => generateMarkdown(basePath, destination);
+      const result = async () => generateMarkdown(basePath, config);
 
       // Assert
       await expect(result).rejects.toThrow(
@@ -52,6 +60,7 @@ describe('generateMarkdown', () => {
   testData.forEach(({ basePath, destination }) => {
     const tmpDir = tmp.dirSync().name;
     basePath = path.join(tmpDir, basePath);
+    destination = path.join(tmpDir, destination);
     fs.mkdirSync(basePath);
 
     it(`creates '${destination}' from '${basePath}'`, async () => {
@@ -59,8 +68,10 @@ describe('generateMarkdown', () => {
       const fullPath = path.join(basePath, extensionManifestName);
       fs.writeFileSync(fullPath, '{}');
 
+      const config = {output: destination, template: defaultTemplate, excludes: []};
+
       // Act
-      await generateMarkdown(basePath, destination);
+      await generateMarkdown(basePath, config);
 
       // Assert
       const result = fs.existsSync(destination);

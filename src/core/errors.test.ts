@@ -11,7 +11,7 @@ describe('PathDoesNotExistError', () => {
 
         // Assert
         expect(result.message).toEqual(
-          `Failed to access '${result}', does it exist?`,
+          `Failed to access '${pathName}', does it exist?`,
         );
       });
     });

@@ -16,6 +16,11 @@ interface CommandResult {
   stderr: string;
 }
 
+/**
+ * Method to run the cli.ts
+ * @param args
+ * @param cwd
+ */
 const cli = (args: string[], cwd: string): Promise<CommandResult> =>
   new Promise((resolve) => {
     exec(
@@ -35,31 +40,42 @@ const cli = (args: string[], cwd: string): Promise<CommandResult> =>
 describe('cli', () => {
   describe('generate', () => {
     // Read the examples folder and use those for testing
-    const inputs = fs.readdirSync(basePath).map((dirName) => {
-      const contents = fs.readdirSync(path.join(basePath, dirName));
+    const testData = fs.readdirSync(basePath).map((dirName) => {
+      const exampleContents = fs.readdirSync(path.join(basePath, dirName));
+
+      const customTemplate = exampleContents.find((c) => c.endsWith('template.md'))!;
 
       return {
         expectedOutput: path.join(
           basePath,
           dirName,
-          contents.find((c) => c.endsWith('.md'))!,
+          exampleContents.find((c) => c.endsWith('overview.md'))!,
         ),
+        customTemplate: customTemplate ? path.join(
+          basePath,
+          dirName,
+          customTemplate,
+        ) : null,
         input: path.join(
           basePath,
           dirName,
-          contents.find((c) => !c.endsWith('.md'))!,
+          exampleContents.find((c) => !c.endsWith('.md'))!,
         ),
       };
     });
 
     // Walk through all the examples and verify whether they are correct
-    inputs.forEach(({ expectedOutput, input }) => {
+    testData.forEach(({ expectedOutput, input, customTemplate }) => {
       const resultFile = tmp.fileSync().name;
 
       it(`generates ${expectedOutput} from ${input}`, async () => {
+        // Arrange
+        const cmdOutput = ['--output', resultFile];
+        const cmdTemplate = customTemplate ? ['--template', customTemplate] : [];
+
         // Act
         const result = await cli(
-          ['generate', input, '--output', resultFile],
+          ['generate', input, ...cmdOutput, ...cmdTemplate],
           '.',
         );
 

@@ -7,12 +7,6 @@ import consola from 'consola';
 import Handlebars from 'handlebars';
 import * as os from 'os';
 
-export const templatePath = path.join(
-  __dirname,
-  '..',
-  'templates',
-  'overview.md',
-);
 export const extensionManifestName = 'vss-extension.json';
 export const taskManifestName = 'task.json';
 
@@ -47,10 +41,12 @@ const verifyPathExists = async (filePath: string) => {
 /**
  * Write the extension data to the given destination
  * @param destination
+ * @param templatePath
  * @param data
  */
 const writeToFile = async (
   destination: string,
+  templatePath: string,
   data: ExtensionData,
 ): Promise<void> => {
   consola.debug(`Converting data using ${templatePath}`);
@@ -87,12 +83,20 @@ const readData = async (
   };
 };
 
+interface GenerateOptions {
+  output: string;
+  template: string;
+
+  // Currently unused
+  excludes: string[];
+}
+
 /**
  * Main method, reads data and writes it to the output
  * @param basePath
- * @param output
+ * @param options
  */
-export const generateMarkdown = async (basePath: string, output: string) => {
+export const generateMarkdown = async (basePath: string, {output, template}: GenerateOptions) => {
   const expectedManifestPath = path.join(basePath, extensionManifestName);
 
   // Wanted to make these parallel, but that's harder to test
@@ -101,7 +105,7 @@ export const generateMarkdown = async (basePath: string, output: string) => {
 
   const data = await readData(basePath, expectedManifestPath);
 
-  await writeToFile(output, data);
+  await writeToFile(output, template, data);
 
   consola.success(`Successfully turned ${basePath} into ${output}`);
 };
