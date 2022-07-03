@@ -31,5 +31,6 @@ Check out [the examples](./examples) to see how the markdown is generated.
 
 ## 🔭 Plans
 
+- More fields in output
 - Allow user to specify an area in their existing markdown to customize output
 - Better error handling
