@@ -25,7 +25,7 @@ describe('generateMarkdown', () => {
       const config = {
         output: destination,
         template: defaultTemplate,
-        excludes: [],
+        exclude: [],
       };
 
       // Act
@@ -48,7 +48,7 @@ describe('generateMarkdown', () => {
       const config = {
         output: destination,
         template: defaultTemplate,
-        excludes: [],
+        exclude: [],
       };
 
       // Act
@@ -79,7 +79,7 @@ describe('generateMarkdown', () => {
       const config = {
         output: destination,
         template: defaultTemplate,
-        excludes: [],
+        exclude: [],
       };
 
       // Act

@@ -1,4 +1,4 @@
-# {{ extension.name }} ({{ extension.version }})
+# {{ extension.name }} {{#if extension.version }}({{ extension.version }}){{/if}}
 
 {{#if extension.icons.default }}
 ![{{ extension.icons.default }}]({{ extension.icons.default }})
@@ -18,7 +18,7 @@
 
 {{#each tasks }}
 
-### {{ this.name }} ({{ this.version.Major }}.{{ this.version.Minor }}.{{ this.version.Patch }})
+### {{ this.name }} {{#if this.version }}({{ this.version.Major }}.{{ this.version.Minor }}.{{ this.version.Patch }}){{/if}}
 
 {{#if this.description}}
 {{ this.description }}

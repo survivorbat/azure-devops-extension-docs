@@ -1,0 +1,2 @@
+extension.version
+tasks.version

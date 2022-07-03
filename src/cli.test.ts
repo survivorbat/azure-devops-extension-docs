@@ -2,6 +2,7 @@ import path from 'path';
 import tmp from 'tmp';
 import { exec, ExecException } from 'child_process';
 import * as fs from 'fs';
+import os from 'os';
 
 tmp.setGracefulCleanup();
 
@@ -47,15 +48,17 @@ describe('cli', () => {
         c.endsWith('template.md'),
       )!;
 
+      const excludes = exampleContents.find((c) => c.endsWith('excludes.md'))!;
+
       return {
         expectedOutput: path.join(
           basePath,
           dirName,
           exampleContents.find((c) => c.endsWith('overview.md'))!,
         ),
-        customTemplate: customTemplate
-          ? path.join(basePath, dirName, customTemplate)
-          : null,
+        excludes: excludes && path.join(basePath, dirName, excludes),
+        customTemplate:
+          customTemplate && path.join(basePath, dirName, customTemplate),
         input: path.join(
           basePath,
           dirName,
@@ -65,21 +68,25 @@ describe('cli', () => {
     });
 
     // Walk through all the examples and verify whether they are correct
-    testData.forEach(({ expectedOutput, input, customTemplate }) => {
+    testData.forEach(({ expectedOutput, input, customTemplate, excludes }) => {
       const resultFile = tmp.fileSync().name;
 
       it(`generates ${expectedOutput} from ${input}`, async () => {
         // Arrange
-        const cmdOutput = ['--output', resultFile];
-        const cmdTemplate = customTemplate
-          ? ['--template', customTemplate]
-          : [];
+        let args = ['--output', resultFile];
+
+        if (customTemplate) {
+          args.push('--template', customTemplate);
+        }
+
+        if (excludes) {
+          fs.readFileSync(excludes, 'utf-8')
+            .split(os.EOL)
+            .forEach((exclude) => args.push('--exclude', exclude));
+        }
 
         // Act
-        const result = await cli(
-          ['generate', input, ...cmdOutput, ...cmdTemplate],
-          '.',
-        );
+        const result = await cli(['generate', input, ...args], '.');
 
         // Assert
         expect(result.code).toEqual(0);

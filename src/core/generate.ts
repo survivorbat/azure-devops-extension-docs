@@ -5,6 +5,7 @@ import glob from 'glob-promise';
 import { ExtensionData } from './objects';
 import consola from 'consola';
 import Handlebars from 'handlebars';
+import { deleteProperties } from 'delete-object-property';
 
 export const extensionManifestName = 'vss-extension.json';
 export const taskManifestName = 'task.json';
@@ -68,9 +69,7 @@ const readData = async (
 interface GenerateOptions {
   output: string;
   template: string;
-
-  // Currently unused
-  excludes: string[];
+  exclude: string[];
 }
 
 /**
@@ -80,7 +79,7 @@ interface GenerateOptions {
  */
 export const generateMarkdown = async (
   basePath: string,
-  { output, template }: GenerateOptions,
+  { output, template, exclude }: GenerateOptions,
 ) => {
   const expectedManifestPath = path.join(basePath, extensionManifestName);
 
@@ -90,7 +89,11 @@ export const generateMarkdown = async (
 
   const data = await readData(basePath, expectedManifestPath);
 
-  await writeToFile(output, template, data);
+  const excludedData = <ExtensionData>(
+    deleteProperties(data, ...(exclude || []))
+  );
+
+  await writeToFile(output, template, excludedData);
 
   consola.success(`Successfully turned ${basePath} into ${output}`);
 };
