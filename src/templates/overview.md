@@ -34,8 +34,6 @@
 
 | Name | Input | Help |
 | ---- | ----- | ---- |
-
-
 {{#each this.inputs }}
 | {{ this.name }} | {{ inputType this.type this.options }} | {{strip-newlines this.helpMarkDown }}
 {{/each}}

@@ -19,8 +19,6 @@ Use this task if you want to create something
 
 | Name | Input | Help |
 | ---- | ----- | ---- |
-
-
 | name | string | This should be the name of the thing you&#x27;re going to create
 | publishOrPreview | preview, publish | If not specified, things will be created but not published
 | dryRun | boolean | If set to true, the task will not create/delete and only pretend to do so. Allows you to see what&#x27;d happen if you used the task.
@@ -51,8 +49,6 @@ Should be used along side the other one
 
 | Name | Input | Help |
 | ---- | ----- | ---- |
-
-
 | name | string | This should be the name of the thing you&#x27;re going to create
 
 

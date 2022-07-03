@@ -4,6 +4,7 @@ coverage/**
 nyc-output/**
 reports/**
 dist/**
+*.md
 *.log
 *.js
 *.d.ts
