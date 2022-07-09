@@ -40,40 +40,45 @@ const cli = (args: string[], cwd: string): Promise<CommandResult> =>
 
 describe('cli', () => {
   describe('generate', () => {
-    // Read the examples folder and use those for testing
-    const testData = fs.readdirSync(basePath).map((dirName) => {
-      const exampleContents = fs.readdirSync(path.join(basePath, dirName));
-
-      const customTemplate = exampleContents.find((c) =>
-        c.endsWith('template.md'),
-      )!;
-
-      const excludes = exampleContents.find((c) => c.endsWith('excludes.md'))!;
-
-      return {
-        expectedOutput: path.join(
-          basePath,
-          dirName,
-          exampleContents.find((c) => c.endsWith('overview.md'))!,
-        ),
-        excludes: excludes && path.join(basePath, dirName, excludes),
-        customTemplate:
-          customTemplate && path.join(basePath, dirName, customTemplate),
-        input: path.join(
-          basePath,
-          dirName,
-          exampleContents.find((c) => !c.endsWith('.md'))!,
-        ),
-      };
-    });
+    const testData = [
+      {
+        input: path.join(basePath, 'simple', 'src'),
+        expectedOutput: path.join(basePath, 'simple', 'overview.md'),
+      },
+      {
+        input: path.join(basePath, 'simple-with-tasks', 'src'),
+        expectedOutput: path.join(basePath, 'simple-with-tasks', 'overview.md'),
+      },
+      {
+        input: path.join(basePath, 'custom-template', 'src'),
+        expectedOutput: path.join(basePath, 'custom-template', 'overview.md'),
+        customTemplate: path.join(basePath, 'custom-template', 'template.md'),
+      },
+      {
+        input: path.join(basePath, 'simple-excluding-version', 'src'),
+        expectedOutput: path.join(basePath, 'simple-excluding-version', 'overview.md'),
+        excludes: path.join(basePath, 'simple-excluding-version', 'excludes.md'),
+      },
+      {
+        input: path.join(basePath, 'embed-in-existing', 'src'),
+        expectedOutput: path.join(basePath, 'embed-in-existing', 'overview.md'),
+        excludes: path.join(basePath, 'embed-in-existing', 'excludes.md'),
+        embed: true,
+      }
+    ];
 
     // Walk through all the examples and verify whether they are correct
-    testData.forEach(({ expectedOutput, input, customTemplate, excludes }) => {
+    testData.forEach(({ expectedOutput, embed, input, customTemplate, excludes }) => {
       const resultFile = tmp.fileSync().name;
 
       it(`generates ${expectedOutput} from ${input}`, async () => {
         // Arrange
         let args = ['--output', resultFile];
+
+        if (embed) {
+          // Write the expected output file to the tmp
+          fs.writeFileSync(resultFile, fs.readFileSync(expectedOutput, 'utf-8'))
+        }
 
         if (customTemplate) {
           args.push('--template', customTemplate);

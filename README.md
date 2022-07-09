@@ -26,12 +26,12 @@ Generates a markdown file using the vss-extension.json and task.json files.
 - `--template`: Allows you to specify a custom handlebars template to use
 - `--exclude`: Exclude one or more values from the output, ex.: `--exclude extension.version --exclude tasks.id`
 
+You can also embed the generated markdown into an already existing file, check out [this example](./examples/embed-in-existing).
+
 ## 🪧 Examples
 
 Check out [the examples](./examples) to see how the markdown is generated.
 
 ## 🔭 Plans
 
-- More fields in output
-- Allow user to specify an area in their existing markdown to customize output
 - Better error handling

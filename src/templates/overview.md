@@ -1,5 +1,6 @@
-# {{ extension.name }} {{#if extension.version }}({{ extension.version }}){{/if}}
+{{#if extension.name }}# {{ extension.name }} {{#if extension.version }}({{ extension.version }}){{/if}}
 
+{{/if}}
 {{#if extension.icons.default }}
 ![{{ extension.icons.default }}]({{ extension.icons.default }})
 

@@ -6,15 +6,20 @@ import { ExtensionData } from './objects';
 import consola from 'consola';
 import Handlebars from 'handlebars';
 import { deleteProperties } from 'delete-object-property';
+import os from "os";
 
 export const extensionManifestName = 'vss-extension.json';
 export const taskManifestName = 'task.json';
+export const embedDelimiters = {
+  start: '[//]: # (azure-devops-extension-docs-embed-start)',
+  end: '[//]: # (azure-devops-extension-docs-embed-end)'
+}
 
 /**
  * Is a helper method to throw an error on a non-existent file
  * @param filePath
  */
-const verifyPathExists = async (filePath: string) => {
+export const verifyPathExists = (filePath: string) => {
   consola.debug(`Verifying whether ${filePath} exists`);
   if (!fs.existsSync(filePath)) {
     throw new PathDoesNotExistError(filePath);
@@ -27,7 +32,7 @@ const verifyPathExists = async (filePath: string) => {
  * @param templatePath
  * @param data
  */
-const writeToFile = async (
+export const writeToFile = async (
   destination: string,
   templatePath: string,
   data: ExtensionData,
@@ -37,8 +42,38 @@ const writeToFile = async (
   const template = Handlebars.compile(templateContents);
   const output: string = template(data);
 
-  consola.debug(`Writing ${output.length} characters to ${destination}`);
-  return fs.promises.writeFile(destination, output);
+  if (!fs.existsSync(destination)) {
+    consola.debug(`Writing ${output.length} characters to ${destination}`);
+    return fs.promises.writeFile(destination, output);
+  }
+
+  consola.debug(`${destination} already exists, checking whether it contains embedding delimiters`);
+
+  const contents = await fs.promises.readFile(destination, 'utf-8');
+
+  let start = 0;
+  let end = contents.length;
+
+  if (contents.includes(embedDelimiters.start)) {
+    consola.debug(`Found ${embedDelimiters.start} in ${destination}`);
+    start = contents.indexOf(embedDelimiters.start);
+  }
+
+  if (contents.includes(embedDelimiters.end)) {
+    consola.debug(`Found ${embedDelimiters.end} in ${destination}`);
+    end = contents.indexOf(embedDelimiters.end);
+  }
+
+  // No delimiters, just write it
+  if (start === 0 && end === contents.length) {
+    consola.debug(`Writing ${output.length} characters to ${destination}`);
+    return fs.promises.writeFile(destination, output);
+  }
+
+  const result = contents.substring(0, start + embedDelimiters.start.length) + output + contents.substring(end)
+
+  consola.debug(`Writing ${result.length} characters to ${destination}`);
+  return fs.promises.writeFile(destination, result);
 };
 
 /**
@@ -84,8 +119,8 @@ export const generateMarkdown = async (
   const expectedManifestPath = path.join(basePath, extensionManifestName);
 
   // Wanted to make these parallel, but that's harder to test
-  await verifyPathExists(basePath);
-  await verifyPathExists(expectedManifestPath);
+  verifyPathExists(basePath);
+  verifyPathExists(expectedManifestPath);
 
   const data = await readData(basePath, expectedManifestPath);
 

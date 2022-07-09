@@ -1,0 +1,33 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+  "id": "ab0a8077-e2a8-438b-965e-39a6939383f7",
+  "name": "TestTask",
+  "friendlyName": "Test Task",
+  "description": "This task performs tests",
+  "helpMarkDown": "Should be used along side the other one",
+  "author": "Great Task",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "preview": false,
+  "showEnvironmentVariables": false,
+  "runsOn": ["Agent", "MachineGroup", "Server"],
+  "category": "Azure Pipelines",
+  "visibility": ["Release"],
+  "inputs": [
+    {
+      "name": "name",
+      "type": "string",
+      "label": "Name of the thing",
+      "required": true,
+      "helpMarkDown": "This should be the name of the thing you're going to create"
+    }
+  ],
+  "execution": {
+    "Node10": {
+      "target": "index.js"
+    }
+  }
+}
