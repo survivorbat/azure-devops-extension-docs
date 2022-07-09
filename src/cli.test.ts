@@ -56,50 +56,63 @@ describe('cli', () => {
       },
       {
         input: path.join(basePath, 'simple-excluding-version', 'src'),
-        expectedOutput: path.join(basePath, 'simple-excluding-version', 'overview.md'),
-        excludes: path.join(basePath, 'simple-excluding-version', 'excludes.md'),
+        expectedOutput: path.join(
+          basePath,
+          'simple-excluding-version',
+          'overview.md',
+        ),
+        excludes: path.join(
+          basePath,
+          'simple-excluding-version',
+          'excludes.md',
+        ),
       },
       {
         input: path.join(basePath, 'embed-in-existing', 'src'),
         expectedOutput: path.join(basePath, 'embed-in-existing', 'overview.md'),
         excludes: path.join(basePath, 'embed-in-existing', 'excludes.md'),
         embed: true,
-      }
+      },
     ];
 
     // Walk through all the examples and verify whether they are correct
-    testData.forEach(({ expectedOutput, embed, input, customTemplate, excludes }) => {
-      const resultFile = tmp.fileSync().name;
+    testData.forEach(
+      ({ expectedOutput, embed, input, customTemplate, excludes }) => {
+        const resultFile = tmp.fileSync().name;
 
-      it(`generates ${expectedOutput} from ${input}`, async () => {
-        // Arrange
-        let args = ['--output', resultFile];
+        it(`generates ${expectedOutput} from ${input}`, async () => {
+          // Arrange
+          let args = ['--output', resultFile];
 
-        if (embed) {
-          // Write the expected output file to the tmp
-          fs.writeFileSync(resultFile, fs.readFileSync(expectedOutput, 'utf-8'))
-        }
+          if (embed) {
+            // Write the expected output file to the tmp
+            fs.writeFileSync(
+              resultFile,
+              fs.readFileSync(expectedOutput, 'utf-8'),
+            );
+          }
 
-        if (customTemplate) {
-          args.push('--template', customTemplate);
-        }
+          if (customTemplate) {
+            args.push('--template', customTemplate);
+          }
 
-        if (excludes) {
-          fs.readFileSync(excludes, 'utf-8')
-            .split(os.EOL)
-            .forEach((exclude) => args.push('--exclude', exclude));
-        }
+          if (excludes) {
+            fs.readFileSync(excludes, 'utf-8')
+              .split(os.EOL)
+              .forEach((exclude) => args.push('--exclude', exclude));
+          }
 
-        // Act
-        const result = await cli(['generate', input, ...args], '.');
+          // Act
+          const result = await cli(['generate', input, ...args], '.');
 
-        // Assert
-        expect(result.code).toEqual(0);
+          // Assert
+          expect(result.code).toEqual(0);
 
-        const expected = fs.readFileSync(expectedOutput, 'utf-8');
-        const actual = fs.readFileSync(resultFile, 'utf-8');
-        expect(actual).toEqual(expected);
-      });
-    });
+          const expected = fs.readFileSync(expectedOutput, 'utf-8');
+          const actual = fs.readFileSync(resultFile, 'utf-8');
+          expect(actual).toEqual(expected);
+        });
+      },
+    );
   });
 });

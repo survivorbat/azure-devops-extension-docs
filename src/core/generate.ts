@@ -6,14 +6,13 @@ import { ExtensionData } from './objects';
 import consola from 'consola';
 import Handlebars from 'handlebars';
 import { deleteProperties } from 'delete-object-property';
-import os from "os";
 
 export const extensionManifestName = 'vss-extension.json';
 export const taskManifestName = 'task.json';
 export const embedDelimiters = {
   start: '[//]: # (azure-devops-extension-docs-embed-start)',
-  end: '[//]: # (azure-devops-extension-docs-embed-end)'
-}
+  end: '[//]: # (azure-devops-extension-docs-embed-end)',
+};
 
 /**
  * Is a helper method to throw an error on a non-existent file
@@ -47,7 +46,9 @@ export const writeToFile = async (
     return fs.promises.writeFile(destination, output);
   }
 
-  consola.debug(`${destination} already exists, checking whether it contains embedding delimiters`);
+  consola.debug(
+    `${destination} already exists, checking whether it contains embedding delimiters`,
+  );
 
   const contents = await fs.promises.readFile(destination, 'utf-8');
 
@@ -70,7 +71,10 @@ export const writeToFile = async (
     return fs.promises.writeFile(destination, output);
   }
 
-  const result = contents.substring(0, start + embedDelimiters.start.length) + output + contents.substring(end)
+  const result =
+    contents.substring(0, start + embedDelimiters.start.length) +
+    output +
+    contents.substring(end);
 
   consola.debug(`Writing ${result.length} characters to ${destination}`);
   return fs.promises.writeFile(destination, result);
