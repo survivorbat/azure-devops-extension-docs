@@ -9,7 +9,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean": "rimraf './dist'",
-    "compile": "npm run clean && tsc && cp -r ./src/templates ./dist/templates",
+    "compile": "npm run clean && tsc && cp -r ./src/templates/overview.md ./dist/templates/overview.md",
     "fmt": "prettier --write . && eslint --fix .",
     "lint": "eslint .",
     "pretest": "npm run clean",
