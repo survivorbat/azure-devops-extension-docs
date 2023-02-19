@@ -1,6 +1,6 @@
 # 🪠 Azure DevOps Extension Documentation generator
 
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/survivorbat/azure-devops-extension-docs/deploy)
+[![Deploy Flow](https://github.com/survivorbat/azure-devops-extension-docs/actions/workflows/deploy.yaml/badge.svg)](https://github.com/survivorbat/azure-devops-extension-docs/actions/workflows/deploy.yaml)
 ![npm](https://img.shields.io/npm/dt/azure-devops-extension-docs)
 ![GitHub](https://img.shields.io/github/license/survivorbat/azure-devops-extension-docs)
 
